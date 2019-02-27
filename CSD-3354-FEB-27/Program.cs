@@ -25,12 +25,22 @@ namespace CSD_3354_FEB_27
         public void Proccess(Order order)
         {
             if (order.IsShipped)
-                throw new InvalidIperationException("This order is already processed.");
+                throw new InvalidOperationException("This order is already processed.");
             order.Shipment = new Shipment
             {
                 Cost = _shippingCalculator.CalculateShipping(order),
-                ShippingDate = DateTime.Today.AddDays(1);
-            }
+                ShippingDate = DateTime.Today.AddDays(1)
+            };
+        }
+    }
+    public class ShippingCalculator
+    {
+        public float CalculateShippng(Order order)
+        {
+            if (order.TotalPrice < 30f)
+                return order.TotalPrice * 0.1f;
+
+            return 0;
         }
     }
 }
